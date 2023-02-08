@@ -1,0 +1,75 @@
+#include <stdio.h>
+void swap(int *a,int *b)
+{
+    int temp=*a;
+    *a=*b;
+    *b=temp;
+}
+int main()
+{
+    int n;
+    printf("Enter Number of Processes: ");
+    scanf("%d",&n);
+    int b[n],p[n],index[n];
+    for(int i=0;i<n;i++)
+    {
+        printf("Enter Burst Time and Priority Value for Process %d: ",i+1);
+        scanf("%d %d",&b[i],&p[i]);
+        index[i]=i+1;
+    }
+    for(int i=0;i<n;i++)
+    {
+        int a=p[i],m=i;
+        for(int j=i;j<n;j++)
+        {
+            if(p[j] > a)
+            {
+                a=p[j];
+                m=j;
+            }
+        }
+        swap(&p[i], &p[m]);
+        swap(&b[i], &b[m]);
+        swap(&index[i],&index[m]);
+    }
+
+    int t=0;
+    printf("Order of process Execution is\n");
+    for(int i=0;i<n;i++)
+    {
+        printf("P%d is executed from %d to %d\n",index[i],t,t+b[i]);
+        t+=b[i];
+    }
+    printf("\n");
+    printf("Process Id     Burst Time   Wait Time    TurnAround Time\n");
+    int wait_time=0;
+    for(int i=0;i<n;i++)
+    {
+        printf("P%d          %d          %d          %d\n",index[i],b[i],wait_time,wait_time + b[i]);
+        wait_time += b[i];
+    }
+    return 0;
+}
+
+
+
+output:
+
+Enter Number of Processes: 3
+Enter Burst Time and Priority Value for Process 1: 5
+1
+Enter Burst Time and Priority Value for Process 2: 6 8
+Enter Burst Time and Priority Value for Process 3: 3 2
+Order of process Execution is
+P2 is executed from 0 to 6
+P3 is executed from 6 to 9
+P1 is executed from 9 to 14
+
+Process Id     Burst Time   Wait Time    TurnAround Time
+P2          6          0          6
+P3          3          6          9
+P1          5          9          14
+
+--------------------------------
+Process exited after 25.73 seconds with return value 0
+Press any key to continue . . .
